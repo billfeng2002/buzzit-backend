@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   delete "/users/:id", to: "users#destroy"
   post  "/check_room_exists", to: "rooms#check_exists"
   get "/messages/:room_id", to: "messages#get_messages"
+  post "/messages", to: "messages#create"
 end
