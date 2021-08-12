@@ -19,6 +19,22 @@ class QuestionsController < ApplicationController
         options=question.options.map{|option| {"id": option.id, "value": option.value}}
         render json: {"img": question.image_url, "value": question.value,"options": options}
     end
+
+    def stats
+        room=Room.find_by_id(params[:room_id])
+        currentQuestionId=room.current_question_id
+        if(!currentQuestionId)
+            render json: {"error": "no question set"}
+            return
+        else
+            currentQuestion=Question.find_by_id(currentQuestionId)
+
+            render json: {value: currentQuestion.value, 
+                options: currentQuestion.optionsDistribution, num_responded: currentQuestion.responses.count,
+                percent_correct: currentQuestion.percent_correct,
+                percent_responded: currentQuestion.percent_responded}
+        end
+    end
     
     def new_question_params
         params.permit(:value, :image_url, :room_id)

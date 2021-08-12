@@ -69,6 +69,7 @@ class RoomsController < ApplicationController
         room=Room.find_by_id(params[:id])
         room.users.destroy_all
         room.destroy
+        render json: {message: "room deleted"}
     end
 
     def new_room_params
