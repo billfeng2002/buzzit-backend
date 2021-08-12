@@ -17,7 +17,7 @@ class RoomsController < ApplicationController
     end
 
     def update
-        room=Room.find_by_id(params[:room_id])
+        room=Room.find_by_id(params[:id])
         room.update(current_question_id: params[:current_question_id], topic: params[:topic], status: params[:status])
         render json: {message: "done"}
     end
@@ -61,8 +61,8 @@ class RoomsController < ApplicationController
 
     def get_member_info
         room=Room.find_by_id(params[:room_id])
-        data=room.users.select{|user| user.id != room.owner_id}.map{|user| {score: user.score, name: user.name, id: user.id}}
-        render json: {count: data.count, members: data}
+        data=room&.users.select{|user| user.id != room.owner_id}.map{|user| {score: user.score, name: user.name, id: user.id}}
+        render json: {count: data&.count, members: data}
     end
 
     def new_room_params

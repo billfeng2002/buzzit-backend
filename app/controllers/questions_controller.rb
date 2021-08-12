@@ -1,7 +1,6 @@
 class QuestionsController < ApplicationController
     def create
-        question = Question.new(new_question_params)
-
+        question = Question.new(self.new_question_params)
         if(question.save)
             #create the options
             options=params[:options]
@@ -9,7 +8,7 @@ class QuestionsController < ApplicationController
                 Option.create(question_id: question.id, value: option["value"], is_correct: option["is_correct"])
             }
 
-            render json: {message: "succesfully created question and options"}
+            render json: {message: "success", question_id: question.id}
         else
             render json: {message: "question and option creation failed"}
         end
@@ -22,6 +21,6 @@ class QuestionsController < ApplicationController
     end
     
     def new_question_params
-        params.permit(:value, :image_url, :question_type, :room_id)
+        params.permit(:value, :image_url, :room_id)
     end
 end
