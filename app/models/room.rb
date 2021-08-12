@@ -15,8 +15,13 @@ class Room < ApplicationRecord
             current_question: Question.find_by_id(self.current_question_id),
             status: self.status,
             topic: self.topic,
-            players: self.users, #might change this later
+            users: self.users, #might change this later
         }
 
+    end
+
+    def self.setRoomOwner(room_id, owner_id)
+        room=Room.find_by_id(room_id)
+        room.update(owner_id: owner_id)
     end
 end

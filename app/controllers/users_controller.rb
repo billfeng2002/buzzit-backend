@@ -3,7 +3,10 @@ class UsersController < ApplicationController
         user = User.new(new_user_params)
         
         if user.save
-          render json: {user_id: user.id}
+          if(params[:owner])
+            Room.setRoomOwner(params[:room_id], user.id)
+          end
+          render json: {user_id: user.id, message: "user created"}
         else
           render json: {message: "Error creating user. Try a different name."}
         end
@@ -25,7 +28,7 @@ class UsersController < ApplicationController
     end
 
     def new_user_params
-        params.permit(:name, :room_id, :username)
+        params.permit(:name, :room_id)
     end
 
 end

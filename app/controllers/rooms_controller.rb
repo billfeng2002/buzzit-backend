@@ -7,8 +7,10 @@ class RoomsController < ApplicationController
 
     def create
         room=Room.new(new_room_params)
+        room.status="awaiting"
+        room.topic="Default topic"
         if(room.save)
-            render json: {room_id: room.id}
+            render json: {room_id: room.id, message: "room created"}
         else
             render json: {message: "failed room creation"}
         end
@@ -28,6 +30,11 @@ class RoomsController < ApplicationController
         else
             render json: {message: "not found"}
         end
+    end
+
+    def set_user
+        userId=params[:user_id]
+        roomId=params[:room_id]
     end
 
     def new_room_params
