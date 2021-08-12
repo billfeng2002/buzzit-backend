@@ -16,4 +16,5 @@ Rails.application.routes.draw do
   get "/user_room_info/:room_id", to: "rooms#user_info"
   get "/owner_room_info/:room_id", to: "rooms#owner_info"
   get "/member_list/:room_id", to: "rooms#get_member_info"
+  get "/question_stats/:room_id", to: "questions#stats"
 end

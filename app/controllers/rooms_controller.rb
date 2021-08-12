@@ -65,6 +65,12 @@ class RoomsController < ApplicationController
         render json: {count: data&.count, members: data}
     end
 
+    def destroy
+        room=Room.find_by_id(params[:id])
+        room.users.destroy_all
+        room.destroy
+    end
+
     def new_room_params
         params.permit(:room_code)
     end
