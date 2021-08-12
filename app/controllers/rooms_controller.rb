@@ -8,7 +8,7 @@ class RoomsController < ApplicationController
     def create
         room=Room.new(new_room_params)
         room.status="awaiting"
-        room.topic="Default topic"
+        room.topic="Welcome to my BuzzIt room!"
         if(room.save)
             render json: {room_id: room.id, message: "room created"}
         else
@@ -35,6 +35,34 @@ class RoomsController < ApplicationController
     def set_user
         userId=params[:user_id]
         roomId=params[:room_id]
+    end
+
+    def user_info
+        room=Room.find_by_id(params[:room_id])
+        if(!room)
+            render json: {status: "closed room"}
+            return
+        end
+        userIds=room.users.map{|user| user.id}
+        render json: {room_topic: room.topic, current_question_id: room.current_question_id, room_status: room.status, users: userIds}
+
+    end
+
+    def owner_info
+        room=Room.find_by_id(params[:room_id])
+        if(!room)
+            render json: {status: "closed room"}
+            return
+        end
+        userIds=room.users.map{|user| user.id}
+        render json: {room_topic: room.topic, current_question_id: room.current_question_id, room_status: room.status, users: userIds}
+
+    end
+
+    def get_member_info
+        room=Room.find_by_id(params[:room_id])
+        data=room.users.select{|user| user.id != room.owner_id}.map{|user| {score: user.score, name: user.name, id: user.id}}
+        render json: {count: data.count, members: data}
     end
 
     def new_room_params

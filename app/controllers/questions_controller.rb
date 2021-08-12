@@ -15,6 +15,12 @@ class QuestionsController < ApplicationController
         end
     end
     
+    def show
+        question=Question.find_by_id(params[:id]) #option needs id and value
+        options=question.options.map{|option| {"id": option.id, "value": option.value}}
+        render json: {"img": question.image_url, "value": question.value,"options": options}
+    end
+    
     def new_question_params
         params.permit(:value, :image_url, :question_type, :room_id)
     end

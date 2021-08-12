@@ -10,4 +10,10 @@ class User < ApplicationRecord
         user.destroy
 
     end
+
+    def score
+        totalSubmitted=self.responses.count
+        numCorrect=self.responses.select{|response| response.option.is_correct==true}.count
+        return numCorrect.to_s+"/"+totalSubmitted.to_s
+    end
 end
